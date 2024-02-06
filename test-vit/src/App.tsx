@@ -8,12 +8,14 @@ let colorIndex = 0;
 function changeColors() {
   const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'white'];
   document.body.style.backgroundColor = colors[colorIndex];
+  document.body.style.backgroundColor
   colorIndex = (colorIndex+1) % colors.length;
-
 }
-// function lightenBG() {
-//   document.body.style.backgroundColor.opacit
 
+// function lightenBG() {
+//   const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'white'];
+//   document.body.style.backgroundColor = colors[colorIndex];
+//   colorIndex = (colorIndex+1) % colors.length;
 // }
 
 function App() {
@@ -28,8 +30,7 @@ function App() {
         This is a testing start page!
       </h1>
       <div className="min-h-screen grid place-content-center">
-        <div className="bg-emerald-500 h-[102px] w-[102px] rounded-full 
-        hover: document.body.style.background.lighten"
+        <div className="bg-emerald-500 h-[102px] w-[102px] rounded-full"
             onClick={changeColors} 
             
             ></div>
