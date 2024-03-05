@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 
 export const words = ["car", "tree", "bush"];
-
+export const allowedWrongCount = 5;
 export const HangmanRoute = () => {
   const [guessed, setGuessed] = useState<string[]>([]);
+  const [word] = useState(() => {
+    Math.round(Math.random() * 2);
+  });
 
   return (
     <div className="p-20">
