@@ -6,32 +6,32 @@ const formatPhoneNumber = (phoneNumber: number) => {
   )}-${strPhoneNumber.slice(6, 10)}`;
 };
 
-enum ColorEnum {
-  Red,
-  Orange,
-  Yellow,
-  Green,
-  Blue,
-  Purple,
-  White,
-}
+// enum ColorEnum {
+//   Red,
+//   Orange,
+//   Yellow,
+//   Green,
+//   Blue,
+//   Purple,
+//   White,
+// }
 
-type Color =
-  | "Red"
-  | "Orange"
-  | "Yellow"
-  | "Green"
-  | "Blue"
-  | "Purple"
-  | "White";
+// type Color =
+//   | "Red"
+//   | "Orange"
+//   | "Yellow"
+//   | "Green"
+//   | "Blue"
+//   | "Purple"
+//   | "White";
 
-type StringEndsWithA<T extends string> = T extends `${infer _}a` ? T : never;
+// type StringEndsWithA<T extends string> = T extends `${infer _}a` ? T : never;
 
-const formatColor = <T extends string>(color: StringEndsWithA<T>) => {
-  return color.toLowerCase() as Lowercase<T>;
-};
+// const formatColor = <T extends string>(color: StringEndsWithA<T>) => {
+//   return color.toLowerCase() as Lowercase<T>;
+// };
 
-const formatted = formatColor("Bluea");
+// const formatted = formatColor("Bluea");
 
 // const cleaned = ('' + phoneNumber).replace(/\D/g, '');
 // const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
