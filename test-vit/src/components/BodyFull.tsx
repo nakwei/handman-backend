@@ -1,19 +1,28 @@
-export const BodyFull = () => {
-    return (
-        <div className="mt-9 flex flex-col justify-center items-center">
-          <div className="border h-[50px] w-[50px] border-black p-100 rounded-full"></div>
-  
-          <div className="flex flex-row">
-          <div className="mt-8 rotate-45 border-t border-black w-[50px] h-[20px]"></div>
-          <div className="border-l border-black h-[100px]"></div>
-          <div className="mt-8 -rotate-45 border-t border-black w-[50px] h-[20px]"></div>
-          </div>
-          
-          <div className="flex flex-row h-6 justify-center items-center">
-          <div className="mt-2 ml-4 -rotate-45 border-t border-black w-[50px]"></div>
-          <div className="mt-2 -ml-4 mr-4 rotate-45 border-t border-black w-[50px]"></div>
-          </div>
-        </div>
-    )
+import { FC } from "react";
 
-}
+export const BodyFull: FC<{ wrongGuessCount: number }> = ({
+  wrongGuessCount,
+}) => {
+  return (
+    <div className="mt-9 relative h-48">
+      {wrongGuessCount > 0 && (
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 border size-[50px] border-black p-100 rounded-full"></div>
+      )}
+      {wrongGuessCount > 1 && (
+        <div className="absolute left-1/2 -translate-x-1/2 top-[50px] border-l border-black h-[100px]"></div>
+      )}
+      {wrongGuessCount > 2 && (
+        <div className="absolute right-1/2 top-16 rotate-45 border-t border-black w-[50px] h-[20px]"></div>
+      )}
+      {wrongGuessCount > 3 && (
+        <div className="absolute left-1/2 top-16 -rotate-45 border-t border-black w-[50px] h-[20px]"></div>
+      )}
+      {wrongGuessCount > 4 && (
+        <div className="absolute right-1/2 top-[150px] origin-top-right -rotate-45 border-t border-black w-[50px] h-[20px]"></div>
+      )}
+      {wrongGuessCount > 5 && (
+        <div className="absolute left-1/2 top-[150px] origin-top-left rotate-45 border-t border-black w-[50px] h-[20px]"></div>
+      )}
+    </div>
+  );
+};
