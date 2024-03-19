@@ -4,7 +4,7 @@ export const BodyFull: FC<{ wrongGuessCount: number }> = ({
   wrongGuessCount
 }) => {
   return (
-    <div className= "relative h-48">
+    <div className= "relative h-48 top-28r">
       {wrongGuessCount > 0 && (
         <div className="absolute left-1/2 -translate-x-1/2 top-0 border size-[50px] border-black p-100 rounded-full"></div>
       )}

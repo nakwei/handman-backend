@@ -34,8 +34,9 @@ export const HangmanRoute = () => {
   });
 
 
-  const wrongGuesses = guessed.filter((char) => !words.includes(char));
+  const wrongGuesses = guessed.filter((char) => !word.includes(char));
   const wrongGuessSet = new Set(wrongGuesses);
+  const correctGuesses = new Set(guessed.filter((char) => word.includes(char)))
   const hasGuessedWord = [...word].every((char) => guessed.includes(char));
   const gameState =
     wrongGuessSet.size === LOSE_COUNT
@@ -50,23 +51,33 @@ export const HangmanRoute = () => {
     return null;
   }
 
-  // use useEffect to update tab text when the user has won or lost
+  useEffect (() => {
+    gameState === "lose" && (
+      document.title = "You Lose!"
+  )
+  gameState === "win" && (
+    document.title = "You Win!"
+)
+}, [gameState])
 
 
   return (
     <div>
       <div className="flex justify-center items-stretch">
-        <div className="mt-5">
+        <div className="absolute top-5">
           <WinLose gameState={gameState} restart={restart}></WinLose>
         </div>
 
       </div>
-      <div className="mt-20">
+      <div className="">
         <BodyFull wrongGuessCount={wrongGuessSet.size} />
       </div>
-      <div className="flex justify-center items-center">
+      <div>
+
+      </div>
+      <div className="absolute left-1/2 -translate-x-1/2 top-1/2">
         <input
-          className="mt-20 border border-red-600 outline-4 outline-red-600"
+          className="border border-red-600 outline-4 outline-red-600"
           type="text"
           value={""}
           onChange={(e) =>
@@ -78,7 +89,9 @@ export const HangmanRoute = () => {
         />
       </div>
       <div> {word}</div>
-      <div> {LOSE_COUNT}</div>
+      <div> {wrongGuessSet.size}</div>
+      <div> {wrongGuessSet}</div>
+      <div> {correctGuesses}</div>
       <div>{JSON.stringify(guessed, null, 2)}</div>
     </div>
   );

@@ -4,7 +4,7 @@ export const WinLose: FC<{gameState: string; restart: ()=>void}> = ({gameState, 
     return (
     <div>
         {gameState === "lose" && (
-            <div className="flex">
+            <div className="flex space-x-5">
                 <div>You've Lost</div>
                 <button className="outline" onClick={restart}>Play Again</button>
             </div> 
