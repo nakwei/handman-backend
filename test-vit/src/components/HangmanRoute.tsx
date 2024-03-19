@@ -9,7 +9,7 @@ export const HangmanRoute = () => {
   });
 
   return (
-    <div className="p-18">
+    <div className="p-20">
       <input
         className="border border-red-600 outline-4 outline-red-600"
         type="text"
