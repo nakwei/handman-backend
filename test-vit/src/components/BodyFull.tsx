@@ -1,10 +1,10 @@
 import { FC } from "react";
 
 export const BodyFull: FC<{ wrongGuessCount: number }> = ({
-  wrongGuessCount,
+  wrongGuessCount
 }) => {
   return (
-    <div className="mt-9 relative h-48">
+    <div className= "relative h-48">
       {wrongGuessCount > 0 && (
         <div className="absolute left-1/2 -translate-x-1/2 top-0 border size-[50px] border-black p-100 rounded-full"></div>
       )}

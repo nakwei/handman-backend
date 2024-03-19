@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BodyFull } from "./BodyFull.tsx";
+import { WinLose } from "./WinLose.tsx";
 
 export const words = [
   "car",
@@ -32,6 +33,7 @@ export const HangmanRoute = () => {
     return words[Math.round(Math.random() * words.length)];
   });
 
+
   const wrongGuesses = guessed.filter((char) => !words.includes(char));
   const wrongGuessSet = new Set(wrongGuesses);
   const hasGuessedWord = [...word].every((char) => guessed.includes(char));
@@ -42,17 +44,22 @@ export const HangmanRoute = () => {
       ? "win"
       : "playing";
 
+  const restart = () => {
+    setNextWord(()=> words[Math.round(Math.random() * words.length)]);
+    setGuessed(()=>[]);
+    return null;
+  }
+
   // use useEffect to update tab text when the user has won or lost
+
 
   return (
     <div>
       <div className="flex justify-center items-stretch">
         <div className="mt-5">
-          <div className="flex">
-            <div>You've Won</div>
-            <button className="outline">Play Again</button>
-          </div>
+          <WinLose gameState={gameState} restart={restart}></WinLose>
         </div>
+
       </div>
       <div className="mt-20">
         <BodyFull wrongGuessCount={wrongGuessSet.size} />
