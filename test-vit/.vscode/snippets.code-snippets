@@ -1,0 +1,33 @@
+{
+    "Start TypeScript React File": {
+      "scope": "typescriptreact",
+      "prefix": "nrf",
+      "body": [
+        "import { FC } from 'react'\n",
+        "interface Props {\n\n}\n",
+        "export const $TM_FILENAME_BASE: FC<Props> = ({ children }) => {\n  return (<div>{children}</div>  )\n}"
+      ],
+      "description": "Scaffolds new typescript react component"
+    },
+    "Start TypeScript React Hook File": {
+      "scope": "typescript",
+      "prefix": "nrh",
+      "body": ["export const $TM_FILENAME_BASE = () => {\n}"],
+      "description": "Scaffolds new typescript react hook"
+    },
+    "Start TypeScript Jest Test File": {
+      "scope": "typescript,typescriptreact",
+      "prefix": "njt",
+      "body": [
+        "/* eslint-disable @typescript-eslint/no-magic-numbers, max-nested-callbacks */",
+        "import * as ${TM_FILENAME_BASE/(.*)\\..+$/$1/} from \"./${TM_FILENAME_BASE/(.*)\\..+$/$1/}\";",
+        "describe(\"${RELATIVE_FILEPATH/(.*)\\.test.(ts|tsx)$/$1/}\", () => {",
+        "  describe(\"\", () => {",
+        "    it(\"\", () => {\n",
+        "    });",
+        "  });",
+        "});"
+      ],
+      "description": "Scaffolds new typescript react hook"
+    }
+  }

@@ -1,0 +1,54 @@
+{
+  /* Prettier Formatting */
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": false,
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.formatOnSave": true
+  },
+  "[css]": {
+    "editor.formatOnSave": true
+  },
+  "[postcss]": {
+    "editor.formatOnSave": true
+  },
+
+  /* Styles Validation */
+  //"css.validate": false,
+  //"postcss.validate": false,
+  //"stylelint.enable": true,
+  //"stylelint.validate": ["postcss", "css"],
+
+  /* Scripts Validation */
+  "javascript.validate.enable": false,
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  /* General file settings */
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  /* Tailwind Autocomplete */
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  /* Use project's typescript instead of VSCode's version */
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  /* Conforms with our eslint import rules when automatically importing modules */
+  "typescript.updateImportsOnFileMove.enabled": "always"
+}
