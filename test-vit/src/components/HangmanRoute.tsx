@@ -3,6 +3,7 @@ import { BodyFull } from "./BodyFull.tsx";
 import { WinLose } from "./WinLose.tsx";
 import { Noose } from "./Noose.tsx";
 import { LetterSpaces } from "./LetterSpaces.tsx";
+import { GameSate } from "./types.ts";
 
 export const words = [
   "car",
@@ -51,7 +52,7 @@ export const HangmanRoute = () => {
   const hasGuessedWord = [...word].every((char) =>
     guessed.includes(char.toLowerCase())
   );
-  const gameState =
+  const gameState: GameSate =
     wrongGuessSet.size === LOSE_COUNT
       ? "lose"
       : hasGuessedWord
@@ -61,7 +62,6 @@ export const HangmanRoute = () => {
   const restart = () => {
     setNextWord(() => words[Math.round(Math.random() * words.length)]);
     setGuessed(() => []);
-    return null;
   };
 
   const gameStateBool = gameState == "win" || gameState == "lose";
@@ -101,7 +101,7 @@ export const HangmanRoute = () => {
           onChange={(e) => {
             if (alphanumericCharacter.test(e.target.value)) {
               setGuessed((last) => {
-                return [e.target.value, ...last];
+                return [...last, e.target.value];
               });
             }
           }}
@@ -111,10 +111,14 @@ export const HangmanRoute = () => {
       <div className="text-gray-500">word-test: {word}</div>
       <div
         className="h-[5rem] w-[30rem] border-black border p-2 text-red-800
-        absolute left-1/2 -translate-x-1/2 bottom-12"
+        absolute left-1/2 -translate-x-1/2 bottom-12 flex gap-x-2"
       >
-        {" "}
-        {wrongGuesses.reverse().toString()}
+        {wrongGuesses.map((guess, index) => (
+          <div key={index}>
+            {guess}
+            {index < wrongGuesses.length - 1 ? "," : ""}
+          </div>
+        ))}
       </div>
     </div>
   );
