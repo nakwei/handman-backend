@@ -26,8 +26,12 @@ export const RainbowCircle = () => {
 
   const currentColor = colors[colorIndex];
   return (
-    <div className="flex justify-center items-center">
+    <div
+      data-testid="rainbow-circle"
+      className="flex justify-center items-center"
+    >
       <button
+        aria-label="Change Colors"
         className={cx(currentColor, "h-[102px] w-[102px] rounded-full bg-r")}
         onClick={changeColors}
       ></button>
