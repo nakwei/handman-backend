@@ -1,1 +1,1 @@
-export default function setup() {}
+import "@testing-library/jest-dom/vitest";
