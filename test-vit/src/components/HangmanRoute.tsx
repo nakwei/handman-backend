@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { BodyFull } from "./BodyFull.tsx";
 import { WinLose } from "./WinLose.tsx";
 import { Noose } from "./Noose.tsx";
 import { LetterSpaces } from "./LetterSpaces.tsx";
 import { GameSate } from "./types.ts";
+import { getRandomIndex } from "../utils/getRandomIndex.ts";
 
 export const words = [
   "car",
@@ -39,7 +40,7 @@ const LOSE_COUNT = 6;
 export const HangmanRoute = () => {
   const [guessed, setGuessed] = useState<string[]>([]);
   const [word, setNextWord] = useState(() => {
-    return words[Math.round(Math.random() * words.length)];
+    return words[getRandomIndex(words)];
   });
 
   const wrongGuesses = guessed.filter(
@@ -60,7 +61,7 @@ export const HangmanRoute = () => {
       : "playing";
 
   const restart = () => {
-    setNextWord(() => words[Math.round(Math.random() * words.length)]);
+    setNextWord(() => words[getRandomIndex(words)]);
     setGuessed(() => []);
   };
 
@@ -70,6 +71,8 @@ export const HangmanRoute = () => {
     gameState === "lose" && (document.title = "You Lose!");
     gameState === "win" && (document.title = "You Win!");
   }, [gameState]);
+
+  const wordTestId = useId();
 
   return (
     <div>
@@ -96,6 +99,7 @@ export const HangmanRoute = () => {
         <input
           className="border border-red-600 outline-4 outline-red-600"
           type="text"
+          aria-label="Guess a character"
           value={""}
           disabled={gameStateBool}
           onChange={(e) => {
@@ -108,7 +112,10 @@ export const HangmanRoute = () => {
         />
       </div>
 
-      <div className="text-gray-500">word-test: {word}</div>
+      <div className="text-gray-500">
+        <span id={wordTestId}>Word Test</span>:{" "}
+        <span aria-labelledby={wordTestId}>{word}</span>
+      </div>
       <div
         className="h-[5rem] w-[30rem] border-black border p-2 text-red-800
         absolute left-1/2 -translate-x-1/2 bottom-12 flex gap-x-2"
