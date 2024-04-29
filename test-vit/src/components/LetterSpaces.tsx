@@ -31,9 +31,8 @@ export const LetterSpaces: FC<{
         ) : (
           <div
             key={index}
-            className="border-b-2 border-black w-5 text-center text-transparent"
+            className="border-b-2 border-black w-5 text-center"
           >
-            {letter}
           </div>
         )
       )}

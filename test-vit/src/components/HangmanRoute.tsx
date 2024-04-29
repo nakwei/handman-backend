@@ -37,10 +37,14 @@ const LOSE_COUNT = 6;
 // ensure that same letter Caps and no caps count as one letter
 // ensure that caps letter count as a guessed letter valid
 // problem rn: why doesn't captial letter guess count as a right answer. rn, stopping it from being a right ansewr.
-export const HangmanRoute = () => {
+export const HangmanRoute = ({ testWord }: { testWord?: string }) => {
   const [guessed, setGuessed] = useState<string[]>([]);
   const [word, setNextWord] = useState(() => {
-    return words[getRandomIndex(words)];
+    if (testWord) {
+      return testWord;
+    } else {
+      return words[getRandomIndex(words)];
+    }
   });
 
   const wrongGuesses = guessed.filter(
@@ -72,13 +76,13 @@ export const HangmanRoute = () => {
     gameState === "win" && (document.title = "You Win!");
   }, [gameState]);
 
-  const wordTestId = useId();
+  // const wordTestId = useId();
 
   return (
     <div>
       <Noose />
       <div className="flex justify-center items-stretch">
-        <div className="absolute top-5">
+        <div className="absolute top-5" aria-label="Game Over Result">
           <WinLose gameState={gameState} restart={restart}></WinLose>
         </div>
       </div>
@@ -87,7 +91,8 @@ export const HangmanRoute = () => {
         <BodyFull wrongGuessCount={wrongGuessSet.size} />
       </div>
 
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-1/3">
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-1/3"
+      aria-label = "correct guesses">
         <LetterSpaces
           letters={word}
           correctLetters={correctGuesses}
@@ -111,22 +116,26 @@ export const HangmanRoute = () => {
           }}
         />
       </div>
-
+{/*
       <div className="text-gray-500">
         <span id={wordTestId}>Word Test</span>:{" "}
         <span aria-labelledby={wordTestId}>{word}</span>
-      </div>
+      </div> */}
       <div
         className="h-[5rem] w-[30rem] border-black border p-2 text-red-800
         absolute left-1/2 -translate-x-1/2 bottom-12 flex gap-x-2"
+        aria-label="Wrong Guess Bank"
       >
         {wrongGuesses.map((guess, index) => (
           <div key={index}>
             {guess}
             {index < wrongGuesses.length - 1 ? "," : ""}
+
           </div>
         ))}
       </div>
     </div>
   );
 };
+export { getRandomIndex };
+
