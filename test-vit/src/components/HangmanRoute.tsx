@@ -91,8 +91,10 @@ export const HangmanRoute = ({ testWord }: { testWord?: string }) => {
         <BodyFull wrongGuessCount={wrongGuessSet.size} />
       </div>
 
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-1/3"
-      aria-label = "correct guesses">
+      <div
+        className="absolute left-1/2 -translate-x-1/2 bottom-1/3"
+        aria-label="correct guesses"
+      >
         <LetterSpaces
           letters={word}
           correctLetters={correctGuesses}
@@ -116,7 +118,7 @@ export const HangmanRoute = ({ testWord }: { testWord?: string }) => {
           }}
         />
       </div>
-{/*
+      {/*
       <div className="text-gray-500">
         <span id={wordTestId}>Word Test</span>:{" "}
         <span aria-labelledby={wordTestId}>{word}</span>
@@ -130,7 +132,6 @@ export const HangmanRoute = ({ testWord }: { testWord?: string }) => {
           <div key={index}>
             {guess}
             {index < wrongGuesses.length - 1 ? "," : ""}
-
           </div>
         ))}
       </div>
@@ -138,4 +139,3 @@ export const HangmanRoute = ({ testWord }: { testWord?: string }) => {
   );
 };
 export { getRandomIndex };
-
