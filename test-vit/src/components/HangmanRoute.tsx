@@ -6,9 +6,6 @@ import { LetterSpaces } from "./LetterSpaces.tsx";
 import { Game, GameSate } from "./types.ts";
 import { HangmanPage } from "./HangmanPage.tsx";
 
-const alphanumericCharacter = /[a-z]/i;
-
-const LOSE_COUNT = 6;
 
 // to fix:
 // ensure that same letter Caps and no caps count as one letter
@@ -17,12 +14,13 @@ const LOSE_COUNT = 6;
 export const HangmanRoute = () => {
   const [game, setGame] = useState<Game | null>(null);
   const fetchGame = useCallback(async () => {
-    const response = await window.fetch("http://locahost:3004/games", {
+    const response = await window.fetch("http://localhost:3004/games", {
       method: "POST",
     });
     const serverGame = (await response.json()) as Game;
     setGame(serverGame);
   }, []);
+
   useEffect(() => {
     fetchGame();
   }, [fetchGame]);

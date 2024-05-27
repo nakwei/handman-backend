@@ -18,48 +18,51 @@ interface Props {
 // ensure that caps letter count as a guessed letter valid
 // problem rn: why doesn't captial letter guess count as a right answer. rn, stopping it from being a right ansewr.
 export const HangmanPage = ({ game }: Props) => {
+
+
   const [guessed, setGuessed] = useState<string[]>([]);
-  const [word, setNextWord] = useState();
+  const [wrongGuessed, setWrongGuessed] = useState<string[]>([]);
+  const [word, setNextWord] = useState<(string|null)[]>(game.word);
 
-  const wrongGuesses = guessed.filter(
-    (char) => !word.includes(char.toLowerCase())
-  );
-  const wrongGuessSet = new Set(wrongGuesses);
-  const correctGuesses = new Set(
-    guessed.filter((char) => word.includes(char.toLowerCase()))
-  );
-  const hasGuessedWord = [...word].every((char) =>
-    guessed.includes(char.toLowerCase())
-  );
-  const gameState: GameSate =
-    wrongGuessSet.size === LOSE_COUNT
-      ? "lose"
-      : hasGuessedWord
-      ? "win"
-      : "playing";
 
-  const restart = () => {
-    setNextWord(() => words[getRandomIndex(words)]);
-    setGuessed(() => []);
-  };
+  // const wrongGuesses = guessed.filter(
+  //   (char) => !word.includes(char.toLowerCase())
+  // );
+  const wrongGuessSet = new Set(wrongGuessed);
+  // const correctGuesses = new Set(
+  //   guessed.filter((char) => word.includes(char.toLowerCase()))
+  // );
+  // const hasGuessedWord = [...word].every((char) =>
+  //   guessed.includes(char.toLowerCase())
+  // );
+  // const gameState: GameSate =
+  //   wrongGuessSet.size === LOSE_COUNT
+  //     ? "lose"
+  //     : hasGuessedWord
+  //     ? "win"
+  //     : "playing";
 
-  const gameStateBool = gameState == "win" || gameState == "lose";
+  // const restart = () => {
+  //   setNextWord(() => words[getRandomIndex(words)]);
+  //   setGuessed(() => []);
+  // };
 
-  useEffect(() => {
-    gameState === "lose" && (document.title = "You Lose!");
-    gameState === "win" && (document.title = "You Win!");
-  }, [gameState]);
+  // const gameStateBool = gameState == "win" || gameState == "lose";
 
-  // const wordTestId = useId();
+  // useEffect(() => {
+  //   gameState === "lose" && (document.title = "You Lose!");
+  //   gameState === "win" && (document.title = "You Win!");
+  // }, [gameState]);
+
 
   return (
     <div>
       <Noose />
-      <div className="flex justify-center items-stretch">
+      {/* <div className="flex justify-center items-stretch">
         <div className="absolute top-5" aria-label="Game Over Result">
           <WinLose gameState={gameState} restart={restart}></WinLose>
         </div>
-      </div>
+      </div> */}
 
       <div className="absolute left-1/2 -translate-x-1/2 top-40">
         <BodyFull wrongGuessCount={wrongGuessSet.size} />
@@ -71,8 +74,7 @@ export const HangmanPage = ({ game }: Props) => {
       >
         <LetterSpaces
           letters={word}
-          correctLetters={correctGuesses}
-          gameState={gameState}
+          gameState="playing"
         />
       </div>
 
@@ -82,30 +84,36 @@ export const HangmanPage = ({ game }: Props) => {
           type="text"
           aria-label="Guess a character"
           value={""}
-          disabled={gameStateBool}
-          onChange={(e) => {
-            if (alphanumericCharacter.test(e.target.value)) {
+          disabled= {false} //{gameStateBool}
+          onChange={async (e) => {
+            const guessedLetter = e.target.value
+            if (alphanumericCharacter.test(guessedLetter)) {
               setGuessed((last) => {
-                return [...last, e.target.value];
+                return [...last, guessedLetter];
               });
-            }
-          }}
+
+              // here I want to make the call to the server
+
+                const response = await window.fetch("http://localhost:3004/games", {
+                  method: "PUT",
+                  body: JSON.stringify({guessed})
+                });
+              const updatedGame = (await response.json());
+              setWrongGuessed(() => updatedGame.wrongGuesses)
+              setNextWord(()=> updatedGame.word)
+          }}}
         />
       </div>
-      {/*
-      <div className="text-gray-500">
-        <span id={wordTestId}>Word Test</span>:{" "}
-        <span aria-labelledby={wordTestId}>{word}</span>
-      </div> */}
+
       <div
         className="h-[5rem] w-[30rem] border-black border p-2 text-red-800
         absolute left-1/2 -translate-x-1/2 bottom-12 flex gap-x-2"
         aria-label="Wrong Guess Bank"
       >
-        {wrongGuesses.map((guess, index) => (
+        {wrongGuessed.map((guess, index) => (
           <div key={index}>
             {guess}
-            {index < wrongGuesses.length - 1 ? "," : ""}
+            {index < wrongGuessed.length - 1 ? "," : ""}
           </div>
         ))}
       </div>
