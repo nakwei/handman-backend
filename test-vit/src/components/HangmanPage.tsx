@@ -54,7 +54,6 @@ export const HangmanPage = ({ game }: Props) => {
   //   gameState === "win" && (document.title = "You Win!");
   // }, [gameState]);
 
-
   return (
     <div>
       <Noose />
@@ -94,7 +93,7 @@ export const HangmanPage = ({ game }: Props) => {
 
               // here I want to make the call to the server
 
-                const response = await window.fetch("http://localhost:3004/games", {
+                const response = await window.fetch("http://localhost:3004/games/userguess", {
                   method: "PUT",
                   body: JSON.stringify({guessed})
                 });
