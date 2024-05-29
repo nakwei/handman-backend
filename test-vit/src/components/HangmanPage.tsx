@@ -11,24 +11,18 @@ const LOSE_COUNT = 6;
 
 interface Props {
   game: Game;
+  onGameUpdated: (game: Game) => void;
 }
 
 // to fix:
 // ensure that same letter Caps and no caps count as one letter
 // ensure that caps letter count as a guessed letter valid
 // problem rn: why doesn't captial letter guess count as a right answer. rn, stopping it from being a right ansewr.
-export const HangmanPage = ({ game }: Props) => {
-
-
-  const [guessed, setGuessed] = useState<string[]>([]);
-  const [wrongGuessed, setWrongGuessed] = useState<string[]>([]);
-  const [word, setNextWord] = useState<(string|null)[]>(game.word);
-
-
-  // const wrongGuesses = guessed.filter(
-  //   (char) => !word.includes(char.toLowerCase())
-  // );
-  const wrongGuessSet = new Set(wrongGuessed);
+export const HangmanPage = ({ game, onGameUpdated }: Props) => {
+  const wrongGuesses = game.guesses.filter(
+    (char) => !game.word.includes(char.toLowerCase())
+  );
+  const wrongGuessSet = new Set(wrongGuesses);
   // const correctGuesses = new Set(
   //   guessed.filter((char) => word.includes(char.toLowerCase()))
   // );
@@ -71,10 +65,7 @@ export const HangmanPage = ({ game }: Props) => {
         className="absolute left-1/2 -translate-x-1/2 bottom-1/3"
         aria-label="correct guesses"
       >
-        <LetterSpaces
-          letters={word}
-          gameState="playing"
-        />
+        <LetterSpaces letters={game.word} gameState="playing" />
       </div>
 
       <div className="absolute left-1/2 -translate-x-1/2 top-3/4">
@@ -83,24 +74,24 @@ export const HangmanPage = ({ game }: Props) => {
           type="text"
           aria-label="Guess a character"
           value={""}
-          disabled= {false} //{gameStateBool}
+          disabled={false} //{gameStateBool}
           onChange={async (e) => {
-            const guessedLetter = e.target.value
+            const guessedLetter = e.target.value;
             if (alphanumericCharacter.test(guessedLetter)) {
-              setGuessed((last) => {
-                return [...last, guessedLetter];
-              });
-
               // here I want to make the call to the server
 
-                const response = await window.fetch("http://localhost:3004/games/userguess", {
+              const response = await window.fetch(
+                "http://localhost:3005/games/guesses",
+                {
                   method: "PUT",
-                  body: JSON.stringify({guessed})
-                });
-              const updatedGame = (await response.json());
-              setWrongGuessed(() => updatedGame.wrongGuesses)
-              setNextWord(()=> updatedGame.word)
-          }}}
+                  body: JSON.stringify([...game.guesses, guessedLetter]),
+                  credentials: "include",
+                }
+              );
+              const updatedGame = await response.json();
+              onGameUpdated(updatedGame);
+            }
+          }}
         />
       </div>
 
@@ -109,10 +100,10 @@ export const HangmanPage = ({ game }: Props) => {
         absolute left-1/2 -translate-x-1/2 bottom-12 flex gap-x-2"
         aria-label="Wrong Guess Bank"
       >
-        {wrongGuessed.map((guess, index) => (
+        {wrongGuesses.map((guess, index) => (
           <div key={index}>
             {guess}
-            {index < wrongGuessed.length - 1 ? "," : ""}
+            {index < wrongGuesses.length - 1 ? "," : ""}
           </div>
         ))}
       </div>

@@ -6,7 +6,6 @@ import { LetterSpaces } from "./LetterSpaces.tsx";
 import { Game, GameSate } from "./types.ts";
 import { HangmanPage } from "./HangmanPage.tsx";
 
-
 // to fix:
 // ensure that same letter Caps and no caps count as one letter
 // ensure that caps letter count as a guessed letter valid
@@ -14,8 +13,9 @@ import { HangmanPage } from "./HangmanPage.tsx";
 export const HangmanRoute = () => {
   const [game, setGame] = useState<Game | null>(null);
   const fetchGame = useCallback(async () => {
-    const response = await window.fetch("http://localhost:3004/games", {
+    const response = await window.fetch("http://localhost:3005/games", {
       method: "POST",
+      credentials: "include",
     });
     const serverGame = (await response.json()) as Game;
     setGame(serverGame);
@@ -24,5 +24,5 @@ export const HangmanRoute = () => {
   useEffect(() => {
     fetchGame();
   }, [fetchGame]);
-  return game ? <HangmanPage game={game} /> : null;
+  return game ? <HangmanPage game={game} onGameUpdated={setGame} /> : null;
 };
