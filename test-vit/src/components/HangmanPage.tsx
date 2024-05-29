@@ -19,34 +19,37 @@ interface Props {
 // ensure that caps letter count as a guessed letter valid
 // problem rn: why doesn't captial letter guess count as a right answer. rn, stopping it from being a right ansewr.
 export const HangmanPage = ({ game, onGameUpdated }: Props) => {
-  const wrongGuesses = game.guesses.filter(
-    (char) => !game.word.includes(char.toLowerCase())
-  );
+  console.log(typeof(game.guesses))//This is logged as an object
+  const guess: string[] = game.guesses
+  console.log(typeof(guess)) //This is logged as an object which makes the filter code below I think not run
+  const wrongGuesses = game.guesses.filter((char) => !game.word.includes(char.toLowerCase()));
+
   const wrongGuessSet = new Set(wrongGuesses);
   // const correctGuesses = new Set(
   //   guessed.filter((char) => word.includes(char.toLowerCase()))
   // );
-  // const hasGuessedWord = [...word].every((char) =>
-  //   guessed.includes(char.toLowerCase())
+  // const hasGuessedWord = game.word.every((char) =>
+  //   char != null ? game.guesses.includes(char.toLowerCase()) : char
   // );
-  // const gameState: GameSate =
-  //   wrongGuessSet.size === LOSE_COUNT
-  //     ? "lose"
-  //     : hasGuessedWord
-  //     ? "win"
-  //     : "playing";
+  const hasGuessedWord = game.word.every((char)=> char!==null)
+  const gameState: GameSate =
+    wrongGuessSet.size === LOSE_COUNT
+      ? "lose"
+      : hasGuessedWord
+      ? "win"
+      : "playing";
 
   // const restart = () => {
   //   setNextWord(() => words[getRandomIndex(words)]);
   //   setGuessed(() => []);
   // };
 
-  // const gameStateBool = gameState == "win" || gameState == "lose";
+  const gameStateBool = gameState == "win" || gameState == "lose";
 
-  // useEffect(() => {
-  //   gameState === "lose" && (document.title = "You Lose!");
-  //   gameState === "win" && (document.title = "You Win!");
-  // }, [gameState]);
+  useEffect(() => {
+    gameState === "lose" && (document.title = "You Lose!");
+    gameState === "win" && (document.title = "You Win!");
+  }, [gameState]);
 
   return (
     <div>
@@ -74,18 +77,19 @@ export const HangmanPage = ({ game, onGameUpdated }: Props) => {
           type="text"
           aria-label="Guess a character"
           value={""}
-          disabled={false} //{gameStateBool}
+          disabled={gameStateBool}
           onChange={async (e) => {
             const guessedLetter = e.target.value;
             if (alphanumericCharacter.test(guessedLetter)) {
+              // console.log([...game.guesses, guessedLetter])
               // here I want to make the call to the server
-
               const response = await window.fetch(
                 "http://localhost:3005/games/guesses",
                 {
                   method: "PUT",
                   body: JSON.stringify([...game.guesses, guessedLetter]),
                   credentials: "include",
+                  headers: {'Content-Type': 'application/json'}
                 }
               );
               const updatedGame = await response.json();
