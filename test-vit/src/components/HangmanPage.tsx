@@ -28,9 +28,7 @@ export const HangmanPage = ({ game, onGameUpdated }: Props) => {
   // const correctGuesses = new Set(
   //   guessed.filter((char) => word.includes(char.toLowerCase()))
   // );
-  // const hasGuessedWord = game.word.every((char) =>
-  //   char != null ? game.guesses.includes(char.toLowerCase()) : char
-  // );
+
   const hasGuessedWord = game.word.every((char)=> char!==null)
   const gameState: GameSate =
     wrongGuessSet.size === LOSE_COUNT
@@ -39,10 +37,17 @@ export const HangmanPage = ({ game, onGameUpdated }: Props) => {
       ? "win"
       : "playing";
 
-  // const restart = () => {
-  //   setNextWord(() => words[getRandomIndex(words)]);
-  //   setGuessed(() => []);
-  // };
+  const restart = async () => {
+    const response = await window.fetch(
+      "http://localhost:3005/games/restart",
+      {
+        method: "PUT",
+        credentials: "include"
+      }
+    );
+    const updatedGame = await response.json();
+    onGameUpdated(updatedGame);
+  };
 
   const gameStateBool = gameState == "win" || gameState == "lose";
 
@@ -54,11 +59,11 @@ export const HangmanPage = ({ game, onGameUpdated }: Props) => {
   return (
     <div>
       <Noose />
-      {/* <div className="flex justify-center items-stretch">
+      <div className="flex justify-center items-stretch">
         <div className="absolute top-5" aria-label="Game Over Result">
           <WinLose gameState={gameState} restart={restart}></WinLose>
         </div>
-      </div> */}
+      </div>
 
       <div className="absolute left-1/2 -translate-x-1/2 top-40">
         <BodyFull wrongGuessCount={wrongGuessSet.size} />
@@ -81,8 +86,6 @@ export const HangmanPage = ({ game, onGameUpdated }: Props) => {
           onChange={async (e) => {
             const guessedLetter = e.target.value;
             if (alphanumericCharacter.test(guessedLetter)) {
-              // console.log([...game.guesses, guessedLetter])
-              // here I want to make the call to the server
               const response = await window.fetch(
                 "http://localhost:3005/games/guesses",
                 {
