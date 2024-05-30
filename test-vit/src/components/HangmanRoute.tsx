@@ -17,8 +17,8 @@ export const HangmanRoute = () => {
       method: "POST",
       credentials: "include",
     });
-    const serverGame: Game = (await response.json());
-    console.log(typeof(serverGame))
+    const serverGame: Game = await response.json();
+    console.log(typeof serverGame);
     setGame(serverGame);
   }, []);
 

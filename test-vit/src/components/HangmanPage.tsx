@@ -14,22 +14,16 @@ interface Props {
   onGameUpdated: (game: Game) => void;
 }
 
-// to fix:
-// ensure that same letter Caps and no caps count as one letter
-// ensure that caps letter count as a guessed letter valid
-// problem rn: why doesn't captial letter guess count as a right answer. rn, stopping it from being a right ansewr.
 export const HangmanPage = ({ game, onGameUpdated }: Props) => {
-  console.log(typeof(game.guesses))//This is logged as an object
-  const guess: string[] = game.guesses
-  console.log(typeof(guess)) //This is logged as an object which makes the filter code below I think not run
-  const wrongGuesses = game.guesses.filter((char) => !game.word.includes(char.toLowerCase()));
+  console.log(typeof game.guesses); //This is logged as an object
+  const guess: string[] = game.guesses;
+  console.log(typeof guess); //This is logged as an object which makes the filter code below I think not run
 
+  const wrongGuesses = game.guesses.filter(
+    (char) => !game.word.includes(char.toLowerCase())
+  );
   const wrongGuessSet = new Set(wrongGuesses);
-  // const correctGuesses = new Set(
-  //   guessed.filter((char) => word.includes(char.toLowerCase()))
-  // );
-
-  const hasGuessedWord = game.word.every((char)=> char!==null)
+  const hasGuessedWord = game.word.every((char) => char !== null);
   const gameState: GameSate =
     wrongGuessSet.size === LOSE_COUNT
       ? "lose"
@@ -38,13 +32,10 @@ export const HangmanPage = ({ game, onGameUpdated }: Props) => {
       : "playing";
 
   const restart = async () => {
-    const response = await window.fetch(
-      "http://localhost:3005/games/restart",
-      {
-        method: "PUT",
-        credentials: "include"
-      }
-    );
+    const response = await window.fetch("http://localhost:3005/games/restart", {
+      method: "PUT",
+      credentials: "include",
+    });
     const updatedGame = await response.json();
     onGameUpdated(updatedGame);
   };
@@ -92,7 +83,7 @@ export const HangmanPage = ({ game, onGameUpdated }: Props) => {
                   method: "PUT",
                   body: JSON.stringify([...game.guesses, guessedLetter]),
                   credentials: "include",
-                  headers: {'Content-Type': 'application/json'}
+                  headers: { "Content-Type": "application/json" },
                 }
               );
               const updatedGame = await response.json();
