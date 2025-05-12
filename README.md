@@ -1,5 +1,4 @@
-Server for hangman project
+Frontend for hangman project
 
-RestFUL API Calls and Cookies
-Express Server
-Encryption and Decyption Functionality
+Vite Environment
+Utilized React and Tailwind CSS
